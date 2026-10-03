@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>کیبورد املا برای کودکان</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#ffb347">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="املا">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data:; media-src 'self' blob: data:; connect-src 'self'; manifest-src 'self'; worker-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#fff8ec;--card:#fff;--ink:#2b2a33;--key:#ffe08a;--key2:#ffb3a7;--key3:#a8e0c6;--accent:#ff7a59;--line:#f0d9a8}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1e1b2e;--card:#2a2640;--ink:#f4f1ff;--key:#6b5bd2;--key2:#c2527a;--key3:#2f9a7a;--accent:#ff9a6b;--line:#443e6b}}
+:root[data-theme="dark"]{--bg:#1e1b2e;--card:#2a2640;--ink:#f4f1ff;--key:#6b5bd2;--key2:#c2527a;--key3:#2f9a7a;--accent:#ff9a6b;--line:#443e6b}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Vazirmatn,Tahoma,"Segoe UI",Arial,sans-serif;-webkit-tap-highlight-color:transparent}
+main{max-width:1000px;margin:0 auto;padding:12px}
+h1{font-size:1.3rem;margin:4px 0 10px;text-align:center}
+.bar{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:10px}
+.btn{font:inherit;font-size:1rem;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;padding:10px 14px;cursor:pointer}
+.btn[hidden]{display:none}
+.btn.on{background:var(--key3);border-color:transparent;font-weight:bold}
+.btn.recon{background:#e5484d;color:#fff;border-color:transparent;font-weight:bold}
+#top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;display:flex;gap:8px;align-items:stretch}
+#bk{flex:0 0 auto;width:92px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font:inherit;font-size:2.4rem;line-height:1;font-weight:bold;color:#fff;background:#e5484d;border:0;border-radius:20px;box-shadow:0 5px 0 rgba(0,0,0,.25),0 6px 14px rgba(0,0,0,.18);cursor:pointer;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+#bk small{font-size:.95rem}
+#bk:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(0,0,0,.25)}
+#screen{flex:1;min-width:0;box-shadow:0 6px 14px rgba(0,0,0,.18);max-height:32vh;overflow-y:auto;min-height:100px;background:var(--card);border:3px solid var(--line);border-radius:20px;padding:12px 18px;font-size:clamp(2rem,8vw,3.2rem);line-height:1.5;word-break:break-all;overflow-wrap:anywhere}
+.cur{display:inline-block;width:3px;height:1em;background:var(--accent);vertical-align:middle;animation:b 1s steps(1) infinite}
+@keyframes b{50%{opacity:0}}
+#kb{display:flex;flex-direction:column;gap:24px;margin-top:16px}
+.sec{background:var(--card);border:2px solid var(--line);border-radius:20px;padding:12px 12px 14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(64px,1fr));gap:8px}
+.k{position:relative;font:inherit;font-size:2.4rem;font-weight:bold;color:#2b2a33;background:var(--key);border:0;border-radius:16px;min-height:76px;box-shadow:0 5px 0 rgba(0,0,0,.2);cursor:pointer;touch-action:manipulation;user-select:none}
+.k:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(0,0,0,.2)}
+.k.v{background:var(--key3)}
+.k.n{background:#9ecbff}
+.k.h{background:var(--key2);font-size:2.2rem}
+.k.s{font-size:1.3rem;background:var(--key2)}
+.k.sp{grid-column:span 3}
+.k.has::after{content:"";position:absolute;top:6px;left:6px;width:10px;height:10px;border-radius:50%;background:#1f9d55}
+.recmode .k:not(.s){outline:3px dashed #e5484d;outline-offset:-3px}
+.k.rec{background:#e5484d!important;color:#fff;animation:p .6s infinite alternate}
+@keyframes p{to{transform:scale(.95)}}
+h2{font-size:1.05rem;margin:0 0 10px;opacity:.85}
+details{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:10px 14px;margin-top:14px;font-size:.95rem;line-height:1.9}
+#saved{background:var(--card);border:3px solid var(--line);border-radius:20px;padding:12px;margin-top:14px}
+#saved[hidden]{display:none}
+.it{display:flex;flex-wrap:wrap;align-items:center;gap:8px;border-bottom:1px solid var(--line);padding:10px 0}
+.it:last-child{border:0}
+.it .tx{flex:1 1 100%;font-size:2rem;overflow-wrap:anywhere}
+.it .dt{flex:1;font-size:.85rem;opacity:.7}
+.sm{font:inherit;font-size:.95rem;border:2px solid var(--line);background:var(--bg);color:var(--ink);border-radius:10px;padding:6px 10px;cursor:pointer}
+.ch{display:inline-block;min-width:1.1em;text-align:center;border-bottom:5px solid var(--accent);margin:0 5px 2px;padding:0 4px;position:relative;line-height:1.35}
+.gap{display:inline-block;width:1.2em}
+.ch.ok{border-color:#1f9d55}
+.ch.bad{background:#ffd9d9;border-color:#e5484d;color:#a4121b}
+.ch.bad::after{content:"✖";position:absolute;top:-.25em;right:-.2em;width:1.1em;height:1.1em;border-radius:50%;background:#e5484d;color:#fff;font-size:.38em;line-height:1.1em;text-align:center}
+#dict{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;background:var(--key3);color:#1b1b22;border-radius:14px;padding:10px 12px;margin-bottom:10px;font-weight:bold}
+#dict[hidden]{display:none}
+#dict .sm{background:#fff;color:#1b1b22}
+#msg{text-align:center;font-size:1rem;margin-top:10px;min-height:1.4em}
+
+/* ---------- افکت‌های جایزه ---------- */
+#fx{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:200}
+.pt{position:absolute;top:-40px;font-size:var(--sz,32px);will-change:transform;animation:fall var(--d,3s) ease-in forwards}
+@keyframes fall{0%{transform:translate(0,0) rotate(0);opacity:1}85%{opacity:1}100%{transform:translate(var(--dx,0),110vh) rotate(var(--r,360deg));opacity:0}}
+.pop{position:absolute;font-size:var(--sz,28px);animation:pop .8s ease-out forwards}
+@keyframes pop{0%{transform:translate(0,0) scale(.3);opacity:1}100%{transform:translate(var(--dx,0),var(--dy,-80px)) scale(1.2);opacity:0}}
+#win{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.35);z-index:150;cursor:pointer}
+#win[hidden]{display:none}
+#win .card{background:var(--card);border:6px solid #ffc531;border-radius:32px;padding:22px 34px;text-align:center;box-shadow:0 12px 40px rgba(0,0,0,.35);animation:bounceIn .7s cubic-bezier(.2,1.5,.4,1)}
+@keyframes bounceIn{0%{transform:scale(.2) rotate(-12deg);opacity:0}100%{transform:scale(1) rotate(0);opacity:1}}
+#win .cup{font-size:6rem;line-height:1.1;animation:wob 1s ease-in-out infinite}
+@keyframes wob{50%{transform:rotate(8deg) scale(1.1)}0%,100%{transform:rotate(-8deg)}}
+#win .big{font-size:2.6rem;font-weight:bold;color:var(--accent);margin:4px 0}
+#win .sts{font-size:3rem;letter-spacing:8px}
+#win .sts span{display:inline-block;animation:st .6s both}
+#win .sts span:nth-child(2){animation-delay:.25s}
+#win .sts span:nth-child(3){animation-delay:.5s}
+@keyframes st{0%{transform:scale(0) rotate(-180deg)}70%{transform:scale(1.5) rotate(20deg)}100%{transform:scale(1)}}
+#win .sub{font-size:1.1rem;margin-top:6px;opacity:.85}
+#score{text-align:center;font-size:1.25rem;font-weight:bold;margin:0 0 10px;background:var(--card);border:2px solid var(--line);border-radius:999px;padding:6px 16px;display:table;margin-inline:auto}
+#score.bump{animation:bump .6s}
+@keyframes bump{40%{transform:scale(1.35)}}
+.k.spark{animation:spk .35s}
+@keyframes spk{40%{transform:scale(1.12)}}
+@media (prefers-reduced-motion:reduce){.pt,.pop{animation-duration:.01s}}
+
+#kids{margin-bottom:8px}
+#kform,#album{background:var(--card);border:3px solid var(--line);border-radius:20px;padding:12px;margin:0 0 10px;text-align:center}
+#kform[hidden],#album[hidden]{display:none}
+#kform input{font:inherit;font-size:1.3rem;border:3px solid var(--line);border-radius:14px;padding:8px 12px;width:min(260px,90%);background:var(--bg);color:var(--ink);text-align:center}
+#kav{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:10px 0}
+#kav button{font-size:2rem;background:var(--bg);border:3px solid transparent;border-radius:14px;padding:2px 8px;cursor:pointer}
+#kav button.on{border-color:var(--accent);background:var(--key);transform:scale(1.15)}
+#album .g{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:8px;margin-top:8px}
+#album .c{position:relative;font-size:2.3rem;background:var(--bg);border:2px solid var(--line);border-radius:14px;padding:6px 0}
+#album .c.no{filter:grayscale(1) brightness(1.4);opacity:.35}
+#album .c i{position:absolute;bottom:0;left:4px;font-size:.7rem;font-style:normal;background:var(--accent);color:#fff;border-radius:8px;padding:0 5px}
+#win .stk{font-size:4.5rem;line-height:1.2;animation:bounceIn .9s .7s both cubic-bezier(.2,1.5,.4,1)}
+#win .nw{font-size:1.1rem;font-weight:bold;color:var(--accent)}
+#saved:not([hidden]){position:fixed;inset:10px;z-index:160;overflow-y:auto;box-shadow:0 10px 40px rgba(0,0,0,.45);max-width:900px;margin:0 auto}
+</style>
+</head>
+<body>
+<div id="fx"></div>
+<div id="win" hidden><div class="card"><div class="cup">🏆</div><div class="big">آفرین! 🎉</div><div class="sts"><span>⭐</span><span>⭐</span><span>⭐</span></div><div class="stk" id="wstk"></div><div class="nw" id="wnw"></div><div class="sub" id="wsub"></div></div></div>
+<main>
+<h1>✏️ کیبورد املا</h1>
+<div id="kids" class="bar"></div>
+<div id="kform" hidden><div style="font-weight:bold;margin-bottom:8px">👋 اسمت چیه؟ یک عکس هم انتخاب کن</div><input id="kn" maxlength="14" placeholder="اسم" autocomplete="off"><div id="kav"></div><button class="btn on" id="kok">✔ ثبت</button> <button class="btn" id="kno">انصراف</button></div>
+<div id="score"><span id="av"></span> <span id="nm"></span> &nbsp; ⭐ <span id="sc">0</span> &nbsp; 🏅 <span id="md">0</span> &nbsp; <span id="lv"></span></div>
+<div id="album" hidden></div>
+<div class="bar">
+<button class="btn on" id="snd">🔊 صدای حروف: روشن</button>
+<button class="btn" id="rd">📖 خواندن متن</button>
+<button class="btn" id="sv">💾 ذخیره املا</button>
+<button class="btn" id="ls">📚 املاهای ذخیره‌شده</button>
+<button class="btn" id="ins" hidden>📲 نصب برنامه</button>
+<button class="btn" id="dm">📝 املا از والدین</button>
+<button class="btn" id="rm">🎙 حالت ضبط صدا</button>
+</div>
+<div id="dict" hidden></div>
+<div id="top"><div id="screen" aria-live="polite"><span id="t"></span><span class="cur"></span></div><button id="bk" aria-label="پاک کردن">⌫<small>پاک کن</small></button></div>
+<div id="kb"></div>
+<div id="saved" hidden></div>
+<div id="msg"></div>
+<details><summary>🎙 راهنمای ضبط صدا</summary>
+۱. دکمهٔ «حالت ضبط صدا» را بزنید (کلیدها خط‌چین قرمز می‌شوند).<br>
+۲. یک کلید را بزنید و اجازهٔ میکروفون را قبول کنید.<br>
+۳. فوراً حرف را بگویید، مثلاً «به» یا «زَبَر». ضبط بعد از ۳٫۵ ثانیه خودکار تمام می‌شود، یا دوباره همان کلید را بزنید.<br>
+۴. صدا بلافاصله پخش می‌شود. اگر خوب نبود، دوباره همان کلید را ضبط کنید.<br>
+۵. کلیدهایی که صدایشان ضبط شده، نقطهٔ سبز دارند.<br>
+۶. دوباره «حالت ضبط صدا» را بزنید تا خاموش شود و املا شروع شود.<br>
+<small>صداها فقط روی همین دستگاه و همین مرورگر ذخیره می‌شوند.</small>
+</details>
+<p id="ver" style="text-align:center;font-size:.8rem;opacity:.5;margin-top:16px">نسخهٔ ۱۵ — املا از والدین + جایزه + پروفایل کودکان</p>
+</main>
+<script>
+const L=[["ا","الف"],["آ","آ"],["ب","به"],["پ","په"],["ت","ته"],["ث","ثه"],["ج","جیم"],["چ","چیم"],["ح","حه"],["خ","خه"],["د","دال"],["ذ","ذال"],["ر","ره"],["ز","زه"],["ژ","ژه"],["س","سین"],["ش","شین"],["ص","صاد"],["ض","ضاد"],["ط","طا"],["ظ","ظا"],["ع","عین"],["غ","غین"],["ف","فه"],["ق","قاف"],["ک","کاف"],["گ","گاف"],["ل","لام"],["م","میم"],["ن","نون"],["و","واو"],["ه","هه"],["ی","یه"],["ئ","همزه"]];
+const H=[["\u064E","زَبَر"],["\u0650","زیر"],["\u064F","پیش"],["\u064B","دو زبر"],["\u064D","دو زیر"],["\u064C","دو پیش"],["\u0651","تشدید"],["\u0652","سکون"]];
+const C=[["او","او"],["ای","ای"],["آ","آ"]];
+const N=[["۱","یک"],["۲","دو"],["۳","سه"],["۴","چهار"],["۵","پنج"],["۶","شش"],["۷","هفت"],["۸","هشت"],["۹","نه"],["۱۰","ده"],["۰","صفر"]];
+const V=new Set(["ا","آ","و","ی"]);
+const names=Object.fromEntries(L.concat(H,C,N));
+const t=document.getElementById("t"),msg=document.getElementById("msg"),kb=document.getElementById("kb");
+let toks=[],res=null,mode="free",target="",sound=true,voice=null,recMode=false;
+const txt=()=>toks.join(""),MARK=/^[\u064B-\u0652]$/;
+const btns={},mem={},urls={};
+
+/* ---------- ذخیره‌سازی صداها ---------- */
+let db=null;
+function openDB(){return new Promise(r=>{try{const q=indexedDB.open("kbrec",1);q.onupgradeneeded=()=>q.result.createObjectStore("r");q.onsuccess=()=>r(q.result);q.onerror=()=>r(null)}catch(e){r(null)}})}
+function dbPut(k,b){mem[k]=b;if(!db)return;try{db.transaction("r","readwrite").objectStore("r").put(b,k)}catch(e){}}
+function dbLoad(){return new Promise(r=>{if(!db)return r();try{const q=db.transaction("r").objectStore("r").openCursor();q.onsuccess=()=>{const c=q.result;if(c){mem[c.key]=c.value;c.continue()}else r()};q.onerror=()=>r()}catch(e){r()}})}
+function mark(k){if(btns[k])btns[k].classList.add("has")}
+
+/* ---------- پخش صدا ---------- */
+let cur=null;
+function playRec(k,done){
+ const b=mem[k];if(!b)return false;
+ if(cur){try{cur.pause()}catch(e){}}
+ const u=urls[k]||(urls[k]=URL.createObjectURL(b));
+ cur=new Audio(u);cur.onended=done||null;
+ cur.play().catch(()=>{if(done)done()});return true}
+function pick(){if("speechSynthesis" in window)voice=speechSynthesis.getVoices().find(v=>/^fa/i.test(v.lang))||null}
+if("speechSynthesis" in window){pick();speechSynthesis.onvoiceschanged=pick}
+function tts(s){const u=new SpeechSynthesisUtterance(s);u.lang="fa-IR";u.rate=.8;u.voice=voice;speechSynthesis.cancel();speechSynthesis.speak(u)}
+function play(k){
+ if(playRec(k)){msg.textContent="";return}
+ if(voice){tts(names[k]||k);return}
+ msg.textContent="برای این کلید صدایی ضبط نشده. از «حالت ضبط صدا» استفاده کنید."}
+
+/* ---------- ضبط صدا ---------- */
+let mr=null,stream=null;
+function stopRec(){if(mr&&mr.state!=="inactive")mr.stop()}
+async function startRec(k,btn){
+ if(mr){stopRec();return}
+ try{stream=await navigator.mediaDevices.getUserMedia({audio:true})}
+ catch(e){msg.textContent="اجازهٔ میکروفون داده نشد یا میکروفون پیدا نشد.";return}
+ const chunks=[];mr=new MediaRecorder(stream);
+ mr.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};
+ mr.onstop=()=>{
+  stream.getTracks().forEach(x=>x.stop());
+  const b=new Blob(chunks,{type:mr.mimeType});mr=null;
+  btn.classList.remove("rec");
+  if(!b.size){msg.textContent="صدایی ضبط نشد، دوباره امتحان کنید.";return}
+  delete urls[k];dbPut(k,b);mark(k);
+  msg.textContent="ضبط شد ✔ حالا پخش می‌شود";playRec(k)};
+ mr.start();btn.classList.add("rec");
+ msg.textContent="🔴 در حال ضبط... حرف را بگویید";
+ const me=mr;setTimeout(()=>{if(mr===me)stopRec()},3500)}
+
+/* ---------- کیبورد ---------- */
+function draw(){
+ t.textContent="";const cells=[];
+ toks.forEach((k,i)=>{
+  if(k===" ")cells.push({sp:1});
+  else if(MARK.test(k)&&cells.length&&!cells[cells.length-1].sp){const c=cells[cells.length-1];c.t.push(k);c.i.push(i)}
+  else cells.push({t:[k],i:[i]})});
+ cells.forEach(c=>{
+  const s=document.createElement("span");
+  if(c.sp){s.className="gap"}
+  else{s.className="ch";s.textContent=c.t.join("");
+   if(res){const st=c.i.map(i=>res[i]);if(st.includes(false))s.classList.add("bad");else if(!st.includes(null))s.classList.add("ok")}}
+  t.appendChild(s)})}
+function changed(){res=null;if(mode==="dict")liveCheck();else draw()}
+function add(c){toks.push(c);changed();if(sound)play(c)}
+function mk(label,cls,fn,key){
+ const b=document.createElement("button");b.className="k "+cls;b.textContent=label;
+ b.onclick=()=>{if(key!==undefined&&recMode)startRec(key,b);else if(!recMode||key===undefined)fn()};
+ if(key!==undefined)btns[key]=b;T.appendChild(b)}
+let T=kb;
+const h2=x=>{const s=document.createElement("div");s.className="sec";const e=document.createElement("h2");e.textContent=x;const g=document.createElement("div");g.className="grid";s.append(e,g);kb.appendChild(s);T=g};
+h2("حروف");
+L.forEach(([c])=>mk(c,V.has(c)?"v":"",()=>add(c),c));
+h2("صداها");
+C.slice(0,2).forEach(([c])=>mk(c,"v",()=>add(c),c));
+h2("اعراب");
+H.forEach(([c])=>mk("ـ"+c,"h",()=>add(c),c));
+h2("اعداد");
+N.forEach(([c])=>mk(c,"n",()=>add(c),c));
+h2("ویرایش");
+mk("فاصله","s sp",()=>{toks.push(" ");changed()});
+mk("⌫ پاک","s",()=>{toks.pop();changed()});
+mk("🗑 همه","s",()=>{toks=[];changed()});
+
+/* ---------- دکمه‌های بالا ---------- */
+const snd=document.getElementById("snd"),rm=document.getElementById("rm");
+snd.onclick=()=>{sound=!sound;snd.classList.toggle("on",sound);snd.textContent="🔊 صدای حروف: "+(sound?"روشن":"خاموش");if(!sound){if(cur)cur.pause();if(window.speechSynthesis)speechSynthesis.cancel()}};
+rm.onclick=()=>{recMode=!recMode;stopRec();document.body.classList.toggle("recmode",recMode);rm.classList.toggle("recon",recMode);
+ rm.textContent=recMode?"⏹ پایان حالت ضبط":"🎙 حالت ضبط صدا";
+ msg.textContent=recMode?"هر کلید را بزنید و حرف را بگویید.":""};
+function readStr(str){
+ const arr=[...str].filter(c=>mem[c]);let i=0;
+ const nx=()=>{if(i<arr.length)playRec(arr[i++],nx)};
+ if(arr.length)nx();
+ else if(voice&&str.trim())tts(str);
+ else msg.textContent="صدایی برای این حروف ضبط نشده."}
+document.getElementById("rd").onclick=()=>readStr(txt());
+
+/* ---------- ذخیره املاها ---------- */
+let saved=[];
+const box=document.getElementById("saved"),ls=document.getElementById("ls");
+function ld(){try{saved=JSON.parse(localStorage.getItem("kbdict")||"[]")}catch(e){saved=[]}}
+function sv(){try{localStorage.setItem("kbdict",JSON.stringify(saved));return true}catch(e){msg.textContent="ذخیره‌سازی در این مرورگر ممکن نیست.";return false}}
+function cnt(){ls.textContent="📚 املاهای ذخیره‌شده ("+saved.length+")"}
+function renderSaved(){
+ box.textContent="";
+ const hd=document.createElement("div");hd.style.cssText="display:flex;justify-content:space-between;align-items:center;font-weight:bold;font-size:1.2rem;margin-bottom:8px";
+ const tt=document.createElement("span");tt.textContent="📚 املاهای ذخیره‌شده";
+ const cl=document.createElement("button");cl.className="sm";cl.textContent="✖ بستن";cl.onclick=()=>{box.hidden=true};
+ hd.append(tt,cl);box.appendChild(hd);
+ if(!saved.length){const e=document.createElement("div");e.textContent="هنوز املایی ذخیره نشده.";box.appendChild(e);return}
+ saved.forEach((it,i)=>{
+  const d=document.createElement("div");d.className="it";
+  const tx=document.createElement("div");tx.className="tx";tx.textContent=it.t;
+  const dt=document.createElement("div");dt.className="dt";dt.textContent=it.d;
+  const bt=(l,f)=>{const b=document.createElement("button");b.className="sm";b.textContent=l;b.onclick=f;return b};
+  d.append(tx,dt,
+   bt("📖 خواندن",()=>readStr(it.t)),
+   bt("✏️ ادامه",()=>{box.hidden=true;toks=[...it.t];changed();window.scrollTo(0,0)}),
+   bt("🗑 حذف",()=>{saved.splice(i,1);sv();cnt();renderSaved()}));
+  box.appendChild(d)});
+ const all=document.createElement("button");all.className="sm";all.textContent="🗑 پاک کردن همهٔ املاها";
+ all.onclick=()=>{if(confirm("همهٔ املاهای ذخیره‌شده پاک شوند؟")){saved=[];sv();cnt();renderSaved()}};
+ box.appendChild(all)}
+document.getElementById("sv").onclick=()=>{
+ if(mode==="set"){msg.textContent="اول کلمهٔ املا را ثبت کنید.";return}
+ if(!txt().trim()){msg.textContent="اول چیزی بنویسید.";return}
+ saved.unshift({t:txt().trim(),d:new Date().toLocaleString("fa-IR")});
+ if(sv()){toks=[];changed();cnt();if(!box.hidden)renderSaved();msg.textContent="املا ذخیره شد ✔"}};
+ls.onclick=()=>{box.hidden=!box.hidden;if(!box.hidden)renderSaved()};
+ld();cnt();
+
+/* ---------- املا از والدین ---------- */
+const dict=document.getElementById("dict"),dm=document.getElementById("dm");
+function dbtn(l,f){const b=document.createElement("button");b.className="sm";b.textContent=l;b.onclick=f;return b}
+function nLetters(w){return [...w].filter(c=>c!==" "&&!MARK.test(c)).length}
+function setMode(m){
+ won=false;lastBad=false;mode=m;toks=[];res=null;draw();dict.textContent="";dict.hidden=(m==="free");dm.hidden=(m!=="free");
+ const lab=document.createElement("span");
+ if(m==="set"){
+  lab.textContent="👨‍👩‍👧 والدین: کلمهٔ املا را با همین کیبورد بنویسید. (بهتر است صدای حروف خاموش باشد)";
+  dict.append(lab,dbtn("✔ ثبت کلمه",()=>{
+   const w=txt().trim();if(!w){msg.textContent="اول یک کلمه بنویسید.";return}
+   target=w;setMode("dict")}),dbtn("انصراف",()=>setMode("free")))}
+ else if(m==="dict"){
+  lab.textContent="📝 املا: کلمه‌ای با "+nLetters(target)+" حرف. گوش کن و بنویس؛ اشتباه همان لحظه نشان داده می‌شود.";
+  dict.append(lab,dbtn("🔊 بشنو",()=>{if([...target].some(c=>mem[c])||voice)readStr(target);else msg.textContent="کلمه را خودتان بخوانید، یا صدای حروف را ضبط کنید."}),
+   dbtn("خروج",()=>setMode("free")))}
+ msg.textContent=""}
+dm.onclick=()=>setMode("set");
+let won=false,lastBad=false;
+function liveCheck(){
+ const a=[...target],b=[...txt()],own=[];
+ toks.forEach((k,i)=>[...k].forEach(()=>own.push(i)));
+ res=toks.map(()=>null);
+ let bad=-1;
+ for(let j=0;j<b.length;j++){if(j>=a.length||a[j]!==b[j]){bad=j;break}}
+ const upto=bad<0?b.length:bad;
+ for(let j=0;j<upto;j++)res[own[j]]=true;
+ if(bad>=0)res[own[bad]]=false;
+ draw();
+ if(!b.length){lastBad=false;msg.textContent="";return}
+ if(bad>=0){
+  if(!lastBad){tone(320,0,.18,"sine",.12);tone(230,.16,.28,"sine",.12)}
+  lastBad=true;
+  msg.textContent="✖ این حرف درست نیست. پاکش کن (⌫) و دوباره امتحان کن.";return}
+ lastBad=false;
+ if(b.length===a.length){
+  msg.textContent="آفرین! 🎉 درست نوشتی";
+  dict.textContent="";const l=document.createElement("span");l.textContent="✅ آفرین!";
+  dict.append(l,dbtn("کلمهٔ بعدی",()=>setMode("set")),dbtn("خروج",()=>setMode("free")));
+  if(!won){won=true;celebrate()}
+  return}
+ msg.textContent="✔ تا اینجا درسته! ادامه بده ("+nLetters(b.join(""))+" از "+nLetters(target)+" حرف)"}
+/* ---------- جایزه و افکت ---------- */
+let AC=null;
+const AVS=["🐶","🐱","🐰","🦊","🐼","🦁","🐸","🦄","🐯","🐵","🐧","🐻"];
+const STK=["🦄","🐉","🚀","🌈","🍦","🎂","🐬","🦋","🐞","🍓","🎸","⚽","🚗","🏰","🤖","👑","🐢","🦖","🌻","🍩","🐘","🦒","🎨","🪁"];
+const LV=[["🐣","جوجه"],["🐰","خرگوش"],["🦊","روباه"],["🐯","ببر"],["🦁","شیر"],["🦄","اسب تک‌شاخ"],["🐉","اژدها"]];
+let kids=[],curId=null,pickAv=AVS[0];
+try{const o=JSON.parse(localStorage.getItem("kbkids")||"{}");kids=o.l||[];curId=o.c||null}catch(e){kids=[]}
+function kSave(){try{localStorage.setItem("kbkids",JSON.stringify({l:kids,c:curId}))}catch(e){}}
+const kid=()=>kids.find(k=>k.id===curId)||null;
+const level=n=>Math.min(LV.length-1,Math.floor(n/15));
+const sc=document.getElementById("sc"),md=document.getElementById("md"),scoreEl=document.getElementById("score"),fx=document.getElementById("fx"),win=document.getElementById("win"),wsub=document.getElementById("wsub");
+function showScore(b){
+ const k=kid(),n=k?k.s:0;
+ sc.textContent=n;md.textContent=Math.floor(n/5);
+ document.getElementById("av").textContent=k?k.a:"👤";document.getElementById("nm").textContent=k?k.n:"مهمان";
+ const l=LV[level(n)];document.getElementById("lv").textContent=l[0]+" "+l[1];
+ if(b){scoreEl.classList.remove("bump");void scoreEl.offsetWidth;scoreEl.classList.add("bump")}}
+function ac(){try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();if(AC.state==="suspended")AC.resume()}catch(e){}return AC}
+function tone(f,t0,d,type,v){const a=ac();if(!a)return;const o=a.createOscillator(),g=a.createGain();o.type=type||"triangle";o.frequency.value=f;
+ const t=a.currentTime+t0;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v||.25,t+.02);g.gain.exponentialRampToValueAtTime(.001,t+d);
+ o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+d+.05)}
+function winSound(){[523,659,784,1047,1319].forEach((f,i)=>tone(f,i*.11,.35));[1047,1319,1568].forEach(f=>tone(f,.65,.7,"sine",.18))}
+function popSound(){tone(880+Math.random()*400,0,.12,"sine",.12)}
+const EM=["⭐","🌟","❤️","💖","💛","💜","🎈","🎉","✨","🌈","🎊","🍭"];
+function rain(n){
+ for(let i=0;i<n;i++){const p=document.createElement("span");p.className="pt";p.textContent=EM[Math.floor(Math.random()*EM.length)];
+  p.style.left=Math.random()*100+"vw";p.style.setProperty("--sz",(22+Math.random()*30)+"px");
+  p.style.setProperty("--d",(2.2+Math.random()*2.2)+"s");p.style.setProperty("--dx",(Math.random()*160-80)+"px");
+  p.style.setProperty("--r",(Math.random()*720-360)+"deg");p.style.animationDelay=(Math.random()*1.2)+"s";
+  fx.appendChild(p);setTimeout(()=>p.remove(),6500)}}
+function burst(x,y,n,em){
+ for(let i=0;i<n;i++){const p=document.createElement("span");p.className="pop";p.textContent=em[Math.floor(Math.random()*em.length)];
+  p.style.left=x+"px";p.style.top=y+"px";const a=Math.random()*6.283,r=50+Math.random()*90;
+  p.style.setProperty("--dx",Math.cos(a)*r+"px");p.style.setProperty("--dy",Math.sin(a)*r+"px");p.style.setProperty("--sz",(18+Math.random()*18)+"px");
+  fx.appendChild(p);setTimeout(()=>p.remove(),900)}}
+function celebrate(){
+ const k=kid();let sticker="",isNew=false,up=false,medal=false;
+ if(k){const old=k.s;k.s+=3;k.st=k.st||{};
+  const left=STK.filter(x=>!k.st[x]),pool=left.length?left:STK;
+  sticker=pool[Math.floor(Math.random()*pool.length)];isNew=!k.st[sticker];k.st[sticker]=(k.st[sticker]||0)+1;
+  up=level(k.s)>level(old);medal=Math.floor(k.s/5)>Math.floor(old/5);kSave()}
+ showScore(true);winSound();rain(60);
+ burst(innerWidth/2,innerHeight/2,16,["⭐","❤️","✨","💖"]);
+ document.getElementById("wstk").textContent=sticker;
+ document.getElementById("wnw").textContent=sticker?(isNew?"🎁 استیکر جدید!":"🎁 این استیکر را دوباره گرفتی"):"";
+ if(!k)wsub.textContent="برای ذخیرهٔ ستاره‌ها یک کودک بساز ➕";
+ else if(up)wsub.textContent="🎊 رفتی مرحلهٔ بعد: "+LV[level(k.s)].join(" ")+" 🎊";
+ else if(medal)wsub.textContent="🏅 یک مدال جدید گرفتی! 🏅";
+ else wsub.textContent="۳ ستاره گرفتی! ⭐ ستاره‌های تو: "+k.s;
+ if(medal||up)setTimeout(()=>{rain(50);winSound()},1200);
+ if(!album.hidden)renderAlbum();
+ win.hidden=false;clearTimeout(win._t);win._t=setTimeout(()=>{win.hidden=true},4500)}
+win.onclick=()=>{win.hidden=true};
+/* ---------- پروفایل کودکان و آلبوم ---------- */
+const kidsEl=document.getElementById("kids"),kform=document.getElementById("kform"),kn=document.getElementById("kn"),kav=document.getElementById("kav"),album=document.getElementById("album");
+function renderKids(){
+ kidsEl.textContent="";
+ kids.forEach(k=>{const b=document.createElement("button");b.className="btn"+(k.id===curId?" on":"");b.textContent=k.a+" "+k.n;
+  b.onclick=()=>{curId=k.id;kSave();renderKids();showScore(true);if(!album.hidden)renderAlbum()};kidsEl.appendChild(b)});
+ const add=(l,f)=>{const b=document.createElement("button");b.className="btn";b.textContent=l;b.onclick=f;kidsEl.appendChild(b)};
+ add("➕ کودک جدید",openForm);
+ if(kid()){add("🎒 آلبوم استیکر",()=>{album.hidden=!album.hidden;if(!album.hidden)renderAlbum()});
+  add("🗑 حذف "+kid().n,()=>{if(confirm("«"+kid().n+"» و همهٔ ستاره‌هایش حذف شود؟")){kids=kids.filter(x=>x.id!==curId);curId=kids.length?kids[0].id:null;kSave();album.hidden=true;renderKids();showScore()}})}}
+function renderAlbum(){
+ const k=kid();album.textContent="";if(!k)return;
+ const own=STK.filter(x=>(k.st||{})[x]).length;
+ const h=document.createElement("div");h.style.fontWeight="bold";h.textContent="🎒 آلبوم "+k.n+": "+own+" از "+STK.length+" استیکر";album.appendChild(h);
+ const g=document.createElement("div");g.className="g";
+ STK.forEach(x=>{const c=document.createElement("div"),n=(k.st||{})[x]||0;c.className="c"+(n?"":" no");c.textContent=n?x:"❔";
+  if(n>1){const i=document.createElement("i");i.textContent="×"+n;c.appendChild(i)}g.appendChild(c)});
+ album.appendChild(g)}
+function openForm(){
+ kform.hidden=false;kn.value="";kav.textContent="";
+ AVS.forEach(a=>{const b=document.createElement("button");b.textContent=a;if(a===pickAv)b.className="on";
+  b.onclick=()=>{pickAv=a;[...kav.children].forEach(x=>x.classList.toggle("on",x===b))};kav.appendChild(b)});
+ kn.focus()}
+document.getElementById("kno").onclick=()=>{kform.hidden=true};
+document.getElementById("kok").onclick=()=>{
+ const n=kn.value.trim()||"کودک";
+ const k={id:Date.now().toString(36),n:n,a:pickAv,s:0,st:{}};kids.push(k);curId=k.id;kSave();
+ kform.hidden=true;renderKids();showScore(true)};
+kn.addEventListener("keydown",e=>{if(e.key==="Enter")document.getElementById("kok").click()});
+renderKids();showScore();if(!kids.length)openForm();
+
+/* جرقهٔ کوچک با هر کلید */
+document.addEventListener("click",e=>{const k=e.target.closest&&e.target.closest(".k");if(!k||recMode)return;
+ const r=k.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,4,["✨","⭐","💛"]);k.classList.remove("spark");void k.offsetWidth;k.classList.add("spark")});
+
+/* ---------- دکمهٔ بزرگ پاک کردن (با نگه داشتن، پشت سر هم پاک می‌کند) ---------- */
+(function(){
+ const bk=document.getElementById("bk");let t1=null,t2=null;
+ const del=()=>{if(recMode||!toks.length)return;toks.pop();changed();popSound()};
+ const stop=()=>{clearTimeout(t1);clearInterval(t2);t1=t2=null};
+ bk.addEventListener("pointerdown",e=>{e.preventDefault();stop();del();t1=setTimeout(()=>{t2=setInterval(()=>{if(!toks.length)stop();else del()},110)},450)});
+ ["pointerup","pointerleave","pointercancel"].forEach(ev=>bk.addEventListener(ev,stop));
+ bk.addEventListener("contextmenu",e=>e.preventDefault());
+})();
+draw();
+document.addEventListener("keydown",e=>{
+ if(recMode||e.ctrlKey||e.metaKey||e.altKey||(e.target&&e.target.tagName==="INPUT"))return;
+ if(e.key==="Backspace"){toks.pop();changed()}
+ else if(e.key==="Delete"){toks.pop();changed()}
+ else if(e.key===" "){e.preventDefault();toks.push(" ");changed()}
+ else if(/^[0-9]$/.test(e.key)){add("۰۱۲۳۴۵۶۷۸۹"[+e.key])}
+ else if(names[e.key]){add(e.key)}});
+
+openDB().then(d=>{db=d;return dbLoad()}).then(()=>Object.keys(mem).forEach(mark));
+
+/* ---------- نصب به‌صورت برنامه ---------- */
+if("serviceWorker" in navigator&&(location.protocol==="https:"||location.hostname==="localhost")){
+ navigator.serviceWorker.register("sw.js").catch(()=>{})}
+let dip=null;const ins=document.getElementById("ins");
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();dip=e;ins.hidden=false});
+ins.onclick=async()=>{if(!dip)return;dip.prompt();await dip.userChoice;dip=null;ins.hidden=true};
+window.addEventListener("appinstalled",()=>{ins.hidden=true});
+</script>
+</body>
+</html>
