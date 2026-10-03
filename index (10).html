@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>کیبورد املا برای کودکان</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#ffb347">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="املا">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#fff8ec;--card:#fff;--ink:#2b2a33;--key:#ffe08a;--key2:#ffb3a7;--key3:#a8e0c6;--accent:#ff7a59;--line:#f0d9a8}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1e1b2e;--card:#2a2640;--ink:#f4f1ff;--key:#6b5bd2;--key2:#c2527a;--key3:#2f9a7a;--accent:#ff9a6b;--line:#443e6b}}
+:root[data-theme="dark"]{--bg:#1e1b2e;--card:#2a2640;--ink:#f4f1ff;--key:#6b5bd2;--key2:#c2527a;--key3:#2f9a7a;--accent:#ff9a6b;--line:#443e6b}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Vazirmatn,Tahoma,"Segoe UI",Arial,sans-serif;-webkit-tap-highlight-color:transparent}
+main{max-width:1000px;margin:0 auto;padding:12px}
+h1{font-size:1.3rem;margin:4px 0 10px;text-align:center}
+.bar{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:10px}
+.btn{font:inherit;font-size:1rem;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;padding:10px 14px;cursor:pointer}
+.btn[hidden]{display:none}
+.btn.on{background:var(--key3);border-color:transparent;font-weight:bold}
+.btn.recon{background:#e5484d;color:#fff;border-color:transparent;font-weight:bold}
+#screen{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;box-shadow:0 6px 14px rgba(0,0,0,.18);max-height:32vh;overflow-y:auto;min-height:100px;background:var(--card);border:3px solid var(--line);border-radius:20px;padding:12px 18px;font-size:clamp(2rem,8vw,3.2rem);line-height:1.5;word-break:break-all;overflow-wrap:anywhere}
+.cur{display:inline-block;width:3px;height:1em;background:var(--accent);vertical-align:middle;animation:b 1s steps(1) infinite}
+@keyframes b{50%{opacity:0}}
+#kb{display:flex;flex-direction:column;gap:24px;margin-top:16px}
+.sec{background:var(--card);border:2px solid var(--line);border-radius:20px;padding:12px 12px 14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(64px,1fr));gap:8px}
+.k{position:relative;font:inherit;font-size:2.4rem;font-weight:bold;color:#2b2a33;background:var(--key);border:0;border-radius:16px;min-height:76px;box-shadow:0 5px 0 rgba(0,0,0,.2);cursor:pointer;touch-action:manipulation;user-select:none}
+.k:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(0,0,0,.2)}
+.k.v{background:var(--key3)}
+.k.n{background:#9ecbff}
+.k.h{background:var(--key2);font-size:2.2rem}
+.k.s{font-size:1.3rem;background:var(--key2)}
+.k.sp{grid-column:span 3}
+.k.has::after{content:"";position:absolute;top:6px;left:6px;width:10px;height:10px;border-radius:50%;background:#1f9d55}
+.recmode .k:not(.s){outline:3px dashed #e5484d;outline-offset:-3px}
+.k.rec{background:#e5484d!important;color:#fff;animation:p .6s infinite alternate}
+@keyframes p{to{transform:scale(.95)}}
+h2{font-size:1.05rem;margin:0 0 10px;opacity:.85}
+details{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:10px 14px;margin-top:14px;font-size:.95rem;line-height:1.9}
+#saved{background:var(--card);border:3px solid var(--line);border-radius:20px;padding:12px;margin-top:14px}
+#saved[hidden]{display:none}
+.it{display:flex;flex-wrap:wrap;align-items:center;gap:8px;border-bottom:1px solid var(--line);padding:10px 0}
+.it:last-child{border:0}
+.it .tx{flex:1 1 100%;font-size:2rem;overflow-wrap:anywhere}
+.it .dt{flex:1;font-size:.85rem;opacity:.7}
+.sm{font:inherit;font-size:.95rem;border:2px solid var(--line);background:var(--bg);color:var(--ink);border-radius:10px;padding:6px 10px;cursor:pointer}
+#msg{text-align:center;font-size:1rem;margin-top:10px;min-height:1.4em}
+</style>
+</head>
+<body>
+<main>
+<h1>✏️ کیبورد املا</h1>
+<div class="bar">
+<button class="btn on" id="snd">🔊 صدای حروف: روشن</button>
+<button class="btn" id="rd">📖 خواندن متن</button>
+<button class="btn" id="sv">💾 ذخیره املا</button>
+<button class="btn" id="ls">📚 املاهای ذخیره‌شده</button>
+<button class="btn" id="ins" hidden>📲 نصب برنامه</button>
+<button class="btn" id="rm">🎙 حالت ضبط صدا</button>
+</div>
+<div id="screen" aria-live="polite"><span id="t"></span><span class="cur"></span></div>
+<div id="kb"></div>
+<div id="saved" hidden></div>
+<div id="msg"></div>
+<details><summary>🎙 راهنمای ضبط صدا</summary>
+۱. دکمهٔ «حالت ضبط صدا» را بزنید (کلیدها خط‌چین قرمز می‌شوند).<br>
+۲. یک کلید را بزنید و اجازهٔ میکروفون را قبول کنید.<br>
+۳. فوراً حرف را بگویید، مثلاً «به» یا «زَبَر». ضبط بعد از ۳٫۵ ثانیه خودکار تمام می‌شود، یا دوباره همان کلید را بزنید.<br>
+۴. صدا بلافاصله پخش می‌شود. اگر خوب نبود، دوباره همان کلید را ضبط کنید.<br>
+۵. کلیدهایی که صدایشان ضبط شده، نقطهٔ سبز دارند.<br>
+۶. دوباره «حالت ضبط صدا» را بزنید تا خاموش شود و املا شروع شود.<br>
+<small>صداها فقط روی همین دستگاه و همین مرورگر ذخیره می‌شوند.</small>
+</details>
+<p id="ver" style="text-align:center;font-size:.8rem;opacity:.5;margin-top:16px">نسخهٔ ۸ — قابل نصب</p>
+</main>
+<script>
+const L=[["ا","الف"],["آ","آ"],["ب","به"],["پ","په"],["ت","ته"],["ث","ثه"],["ج","جیم"],["چ","چیم"],["ح","حه"],["خ","خه"],["د","دال"],["ذ","ذال"],["ر","ره"],["ز","زه"],["ژ","ژه"],["س","سین"],["ش","شین"],["ص","صاد"],["ض","ضاد"],["ط","طا"],["ظ","ظا"],["ع","عین"],["غ","غین"],["ف","فه"],["ق","قاف"],["ک","کاف"],["گ","گاف"],["ل","لام"],["م","میم"],["ن","نون"],["و","واو"],["ه","هه"],["ی","یه"],["ئ","همزه"]];
+const H=[["\u064E","زَبَر"],["\u0650","زیر"],["\u064F","پیش"],["\u064B","دو زبر"],["\u064D","دو زیر"],["\u064C","دو پیش"],["\u0651","تشدید"],["\u0652","سکون"]];
+const C=[["او","او"],["ای","ای"],["آ","آ"]];
+const N=[["۱","یک"],["۲","دو"],["۳","سه"],["۴","چهار"],["۵","پنج"],["۶","شش"],["۷","هفت"],["۸","هشت"],["۹","نه"],["۱۰","ده"],["۰","صفر"]];
+const V=new Set(["ا","آ","و","ی"]);
+const names=Object.fromEntries(L.concat(H,C,N));
+const t=document.getElementById("t"),msg=document.getElementById("msg"),kb=document.getElementById("kb");
+let text="",sound=true,voice=null,recMode=false;
+const btns={},mem={},urls={};
+
+/* ---------- ذخیره‌سازی صداها ---------- */
+let db=null;
+function openDB(){return new Promise(r=>{try{const q=indexedDB.open("kbrec",1);q.onupgradeneeded=()=>q.result.createObjectStore("r");q.onsuccess=()=>r(q.result);q.onerror=()=>r(null)}catch(e){r(null)}})}
+function dbPut(k,b){mem[k]=b;if(!db)return;try{db.transaction("r","readwrite").objectStore("r").put(b,k)}catch(e){}}
+function dbLoad(){return new Promise(r=>{if(!db)return r();try{const q=db.transaction("r").objectStore("r").openCursor();q.onsuccess=()=>{const c=q.result;if(c){mem[c.key]=c.value;c.continue()}else r()};q.onerror=()=>r()}catch(e){r()}})}
+function mark(k){if(btns[k])btns[k].classList.add("has")}
+
+/* ---------- پخش صدا ---------- */
+let cur=null;
+function playRec(k,done){
+ const b=mem[k];if(!b)return false;
+ if(cur){try{cur.pause()}catch(e){}}
+ const u=urls[k]||(urls[k]=URL.createObjectURL(b));
+ cur=new Audio(u);cur.onended=done||null;
+ cur.play().catch(()=>{if(done)done()});return true}
+function pick(){if("speechSynthesis" in window)voice=speechSynthesis.getVoices().find(v=>/^fa/i.test(v.lang))||null}
+if("speechSynthesis" in window){pick();speechSynthesis.onvoiceschanged=pick}
+function tts(s){const u=new SpeechSynthesisUtterance(s);u.lang="fa-IR";u.rate=.8;u.voice=voice;speechSynthesis.cancel();speechSynthesis.speak(u)}
+function play(k){
+ if(playRec(k)){msg.textContent="";return}
+ if(voice){tts(names[k]||k);return}
+ msg.textContent="برای این کلید صدایی ضبط نشده. از «حالت ضبط صدا» استفاده کنید."}
+
+/* ---------- ضبط صدا ---------- */
+let mr=null,stream=null;
+function stopRec(){if(mr&&mr.state!=="inactive")mr.stop()}
+async function startRec(k,btn){
+ if(mr){stopRec();return}
+ try{stream=await navigator.mediaDevices.getUserMedia({audio:true})}
+ catch(e){msg.textContent="اجازهٔ میکروفون داده نشد یا میکروفون پیدا نشد.";return}
+ const chunks=[];mr=new MediaRecorder(stream);
+ mr.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};
+ mr.onstop=()=>{
+  stream.getTracks().forEach(x=>x.stop());
+  const b=new Blob(chunks,{type:mr.mimeType});mr=null;
+  btn.classList.remove("rec");
+  if(!b.size){msg.textContent="صدایی ضبط نشد، دوباره امتحان کنید.";return}
+  delete urls[k];dbPut(k,b);mark(k);
+  msg.textContent="ضبط شد ✔ حالا پخش می‌شود";playRec(k)};
+ mr.start();btn.classList.add("rec");
+ msg.textContent="🔴 در حال ضبط... حرف را بگویید";
+ const me=mr;setTimeout(()=>{if(mr===me)stopRec()},3500)}
+
+/* ---------- کیبورد ---------- */
+function draw(){t.textContent=text}
+function add(c){text+=c;draw();if(sound)play(c)}
+function mk(label,cls,fn,key){
+ const b=document.createElement("button");b.className="k "+cls;b.textContent=label;
+ b.onclick=()=>{if(key!==undefined&&recMode)startRec(key,b);else if(!recMode||key===undefined)fn()};
+ if(key!==undefined)btns[key]=b;T.appendChild(b)}
+let T=kb;
+const h2=x=>{const s=document.createElement("div");s.className="sec";const e=document.createElement("h2");e.textContent=x;const g=document.createElement("div");g.className="grid";s.append(e,g);kb.appendChild(s);T=g};
+h2("حروف");
+L.forEach(([c])=>mk(c,V.has(c)?"v":"",()=>add(c),c));
+h2("صداها");
+C.slice(0,2).forEach(([c])=>mk(c,"v",()=>add(c),c));
+h2("اعراب");
+H.forEach(([c])=>mk("ـ"+c,"h",()=>add(c),c));
+h2("اعداد");
+N.forEach(([c])=>mk(c,"n",()=>add(c),c));
+h2("ویرایش");
+mk("فاصله","s sp",()=>{text+=" ";draw()});
+mk("⌫ پاک","s",()=>{text=text.slice(0,-1);draw()});
+mk("🗑 همه","s",()=>{text="";draw()});
+
+/* ---------- دکمه‌های بالا ---------- */
+const snd=document.getElementById("snd"),rm=document.getElementById("rm");
+snd.onclick=()=>{sound=!sound;snd.classList.toggle("on",sound);snd.textContent="🔊 صدای حروف: "+(sound?"روشن":"خاموش");if(!sound){if(cur)cur.pause();if(window.speechSynthesis)speechSynthesis.cancel()}};
+rm.onclick=()=>{recMode=!recMode;stopRec();document.body.classList.toggle("recmode",recMode);rm.classList.toggle("recon",recMode);
+ rm.textContent=recMode?"⏹ پایان حالت ضبط":"🎙 حالت ضبط صدا";
+ msg.textContent=recMode?"هر کلید را بزنید و حرف را بگویید.":""};
+function readStr(str){
+ const arr=[...str].filter(c=>mem[c]);let i=0;
+ const nx=()=>{if(i<arr.length)playRec(arr[i++],nx)};
+ if(arr.length)nx();
+ else if(voice&&str.trim())tts(str);
+ else msg.textContent="صدایی برای این حروف ضبط نشده."}
+document.getElementById("rd").onclick=()=>readStr(text);
+
+/* ---------- ذخیره املاها ---------- */
+let saved=[];
+const box=document.getElementById("saved"),ls=document.getElementById("ls");
+function ld(){try{saved=JSON.parse(localStorage.getItem("kbdict")||"[]")}catch(e){saved=[]}}
+function sv(){try{localStorage.setItem("kbdict",JSON.stringify(saved));return true}catch(e){msg.textContent="ذخیره‌سازی در این مرورگر ممکن نیست.";return false}}
+function cnt(){ls.textContent="📚 املاهای ذخیره‌شده ("+saved.length+")"}
+function renderSaved(){
+ box.textContent="";
+ if(!saved.length){box.textContent="هنوز املایی ذخیره نشده.";return}
+ saved.forEach((it,i)=>{
+  const d=document.createElement("div");d.className="it";
+  const tx=document.createElement("div");tx.className="tx";tx.textContent=it.t;
+  const dt=document.createElement("div");dt.className="dt";dt.textContent=it.d;
+  const bt=(l,f)=>{const b=document.createElement("button");b.className="sm";b.textContent=l;b.onclick=f;return b};
+  d.append(tx,dt,
+   bt("📖 خواندن",()=>readStr(it.t)),
+   bt("✏️ ادامه",()=>{text=it.t;draw();window.scrollTo(0,0)}),
+   bt("🗑 حذف",()=>{saved.splice(i,1);sv();cnt();renderSaved()}));
+  box.appendChild(d)});
+ const all=document.createElement("button");all.className="sm";all.textContent="🗑 پاک کردن همهٔ املاها";
+ all.onclick=()=>{if(confirm("همهٔ املاهای ذخیره‌شده پاک شوند؟")){saved=[];sv();cnt();renderSaved()}};
+ box.appendChild(all)}
+document.getElementById("sv").onclick=()=>{
+ if(!text.trim()){msg.textContent="اول چیزی بنویسید.";return}
+ saved.unshift({t:text.trim(),d:new Date().toLocaleString("fa-IR")});
+ if(sv()){text="";draw();cnt();if(!box.hidden)renderSaved();msg.textContent="املا ذخیره شد ✔"}};
+ls.onclick=()=>{box.hidden=!box.hidden;if(!box.hidden)renderSaved()};
+ld();cnt();
+document.addEventListener("keydown",e=>{
+ if(recMode||e.ctrlKey||e.metaKey||e.altKey)return;
+ if(e.key==="Backspace"){text=text.slice(0,-1);draw()}
+ else if(e.key===" "){e.preventDefault();text+=" ";draw()}
+ else if(/^[0-9]$/.test(e.key)){add("۰۱۲۳۴۵۶۷۸۹"[+e.key])}
+ else if(names[e.key]){add(e.key)}});
+
+openDB().then(d=>{db=d;return dbLoad()}).then(()=>Object.keys(mem).forEach(mark));
+
+/* ---------- نصب به‌صورت برنامه ---------- */
+if("serviceWorker" in navigator&&(location.protocol==="https:"||location.hostname==="localhost")){
+ navigator.serviceWorker.register("sw.js").catch(()=>{})}
+let dip=null;const ins=document.getElementById("ins");
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();dip=e;ins.hidden=false});
+ins.onclick=async()=>{if(!dip)return;dip.prompt();await dip.userChoice;dip=null;ins.hidden=true};
+window.addEventListener("appinstalled",()=>{ins.hidden=true});
+</script>
+</body>
+</html>
