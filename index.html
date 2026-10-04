@@ -118,8 +118,6 @@ details{background:var(--card);border:2px solid var(--line);border-radius:14px;p
 #wl .wi{display:flex;gap:2px;align-items:stretch}
 #wl .wi .btn{font-size:1.4rem;padding:8px 14px}
 #wl .wi .x{font-size:.9rem;padding:4px 8px;border-radius:10px}
-#diag{background:var(--card);border:3px solid var(--line);border-radius:16px;padding:12px;margin:0 0 10px;white-space:pre-wrap;line-height:1.9;direction:rtl;text-align:right}
-#diag[hidden]{display:none}
 #recguide{background:#fff3cd;color:#5c4400;border:3px solid #ffc531;border-radius:16px;padding:12px;margin:0 0 10px;line-height:1.9;text-align:center}
 #recguide[hidden],#recov[hidden]{display:none}
 #recov{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:170;display:flex;align-items:center;justify-content:center}
@@ -145,7 +143,6 @@ body.recmode{padding-bottom:90px}
 <main>
 <h1>✏️ کیبورد املا</h1>
 <div id="stat"></div>
-<div id="diag" hidden></div>
 <div id="recguide" hidden><b>🎙 حالت ضبط روشن است</b><br>۱) روی یک حرف بزنید: حرف روی صفحه تایپ می‌شود و ضبط شروع می‌شود<br>۲) اسم یا صدای همان حرف را بگویید &nbsp; ۳) «⏹ تمام شد» را بزنید</div>
 <div id="recbar" hidden><span>🎙 حالت ضبط روشن است: هر حرف که بزنید تایپ و ضبط می‌شود</span><button class="btn on" id="recoff">⏹ خروج و تایپ کردن</button></div>
 <div id="recov" hidden><div class="rbox"><div class="rdot">🔴 در حال ضبط</div><div class="rl" id="rl"></div><div class="rsay" id="rsay"></div><div class="rstat" id="rstat"></div><div class="lv"><i id="lvb"></i></div><div class="rhint">وقتی صحبت می‌کنید، نوار سبز باید حرکت کند</div><button class="btn on" id="rstop">⏹ تمام شد</button></div></div>
@@ -162,7 +159,6 @@ body.recmode{padding-bottom:90px}
 <button class="btn" id="ins">📲 نصب برنامه</button>
 <button class="btn" id="dm">📝 املا از والدین</button>
 <button class="btn" id="rm">🎙 حالت ضبط صدا</button>
-<button class="btn" id="dg">🔍 بررسی میکروفون</button>
 <button class="btn" id="bkp">📤 پشتیبان‌گیری</button>
 <button class="btn" id="rsb">📥 بازیابی</button>
 <input type="file" id="rst" accept=".json,application/json" hidden>
@@ -175,14 +171,14 @@ body.recmode{padding-bottom:90px}
 <div id="msg"></div>
 <details><summary>🎙 راهنمای ضبط صدا</summary>
 ۱. دکمهٔ «حالت ضبط صدا» را بزنید (کلیدها خط‌چین قرمز می‌شوند).<br>
-۲. یک کلید را بزنید و اجازهٔ میکروفون را قبول کنید.<br>
+۲. اگر مرورگر پرسید، یک‌بار اجازهٔ میکروفون را قبول کنید.<br>
 ۳. فوراً حرف را بگویید، مثلاً «به» یا «زَبَر». ضبط بعد از ۳٫۵ ثانیه خودکار تمام می‌شود، یا دوباره همان کلید را بزنید.<br>
 ۴. صدا بلافاصله پخش می‌شود. اگر خوب نبود، دوباره همان کلید را ضبط کنید.<br>
 ۵. کلیدهایی که صدایشان ضبط شده، نقطهٔ سبز دارند.<br>
 ۶. دوباره «حالت ضبط صدا» را بزنید تا خاموش شود و املا شروع شود.<br>
 <small>صداها فقط روی همین دستگاه و همین مرورگر ذخیره می‌شوند.</small>
 </details>
-<p id="ver" style="text-align:center;font-size:.8rem;opacity:.5;margin-top:16px">نسخهٔ ۲۶ — املا از والدین + جایزه + پروفایل کودکان</p>
+<p id="ver" style="text-align:center;font-size:.8rem;opacity:.5;margin-top:16px">نسخهٔ ۲۷ — ضبط پایدار صدا</p>
 </main>
 <script>
 const L=[["ا","الف"],["آ","آ"],["ب","به"],["پ","په"],["ت","ته"],["ث","ثه"],["ج","جیم"],["چ","چیم"],["ح","حه"],["خ","خه"],["د","دال"],["ذ","ذال"],["ر","ره"],["ز","زه"],["ژ","ژه"],["س","سین"],["ش","شین"],["ص","صاد"],["ض","ضاد"],["ط","طا"],["ظ","ظا"],["ع","عین"],["غ","غین"],["ف","فه"],["ق","قاف"],["ک","کاف"],["گ","گاف"],["ل","لام"],["م","میم"],["ن","نون"],["و","واو"],["ه","هه"],["ی","یه"],["ئ","همزه"]];
@@ -222,7 +218,7 @@ function play(k){
  msg.textContent="برای این کلید صدایی ضبط نشده. از «حالت ضبط صدا» استفاده کنید."}
 
 /* ---------- ضبط صدا ---------- */
-let mr=null,stream=null,recTimer=null,micErr="";
+let mr=null,stream=null,micPromise=null,recTimer=null,micErr="";
 const UA=navigator.userAgent||"";
 const IOS=/iPad|iPhone|iPod/.test(UA)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
 const INAPP=/; wv\)|Telegram|Bale|Eitaa|Rubika|Soroush|Instagram|FBAN|FBAV|Line\/|MiuiBrowser.*Quark|UCBrowser/i.test(UA);
@@ -233,15 +229,23 @@ function micOff(){if(stream){stream.getTracks().forEach(x=>x.stop());stream=null
 async function micOn(){
  micErr="";
  if(stream&&stream.getTracks().some(t=>t.readyState==="live"))return true;
+ if(micPromise)return micPromise;
  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia||typeof MediaRecorder==="undefined"){
   micErr="این مرورگر ضبط صدا را پشتیبانی نمی‌کند. "+(INAPP?"صفحه را در Chrome باز کنید (منوی ⋮ ← باز کردن در مرورگر).":"از Chrome یا Safari جدید استفاده کنید و آدرس باید https باشد.");
   msg.textContent=micErr;return false}
- try{stream=await navigator.mediaDevices.getUserMedia({audio:true});return true}
- catch(e){const n=(e&&e.name)||"?";
-  micErr=(n==="NotAllowedError"||n==="SecurityError")
-   ?"اجازهٔ میکروفون داده نشد ("+n+"). "+(INAPP?"به نظر می‌رسد صفحه داخل برنامهٔ دیگری (تلگرام/بله/ایتا/…) باز شده؛ منوی ⋮ را بزنید و «باز کردن در Chrome» را انتخاب کنید.":"روی ⋮ یا قفل کنار آدرس بزنید ← تنظیمات سایت ← میکروفون ← «مجاز». در تنظیمات اندروید هم میکروفون Chrome باید روشن باشد. (داخل لینک‌های پیش‌نمایش Claude ممکن است میکروفون بسته باشد؛ روی سایت خودتان امتحان کنید.)")
-   :"میکروفون باز نشد ("+n+"). اگر برنامهٔ دیگری از میکروفون استفاده می‌کند آن را ببندید و دوباره امتحان کنید.";
-  msg.textContent=micErr;return false}}
+ micPromise=(async()=>{
+  try{
+   const next=await navigator.mediaDevices.getUserMedia({audio:true});
+   if(stream&&stream!==next)stream.getTracks().forEach(x=>x.stop());
+   stream=next;return true
+  }catch(e){const n=(e&&e.name)||"?";
+   micErr=(n==="NotAllowedError"||n==="SecurityError")
+    ?"اجازهٔ میکروفون داده نشد ("+n+"). "+(INAPP?"به نظر می‌رسد صفحه داخل برنامهٔ دیگری (تلگرام/بله/ایتا/…) باز شده؛ منوی ⋮ را بزنید و «باز کردن در Chrome» را انتخاب کنید.":"روی ⋮ یا قفل کنار آدرس بزنید ← تنظیمات سایت ← میکروفون ← «مجاز». در تنظیمات اندروید هم میکروفون Chrome باید روشن باشد.")
+    :"میکروفون باز نشد ("+n+"). اگر برنامهٔ دیگری از میکروفون استفاده می‌کند آن را ببندید و دوباره امتحان کنید.";
+   msg.textContent=micErr;return false
+  }finally{micPromise=null}
+ })();
+ return micPromise}
 /* ---------- نوار صدا و پنجرهٔ ضبط ---------- */
 let lvRaf=0,lvSrc=null,peak=0;
 function lvStart(){peak=0;try{const a=ac();if(!a||!stream)return;lvSrc=a.createMediaStreamSource(stream);
@@ -260,14 +264,15 @@ async function startRec(k,btn){
  if(mr){stopRec();return}
  ovShow(k,btn.textContent);ovStatus("⏳ در حال باز کردن میکروفون...");
  if(!(await micOn())){ovFail(micErr);return}
+ if(!recMode||!stream||!stream.getTracks().some(t=>t.readyState==="live")){ovHide();return}
  const chunks=[];let me;
  try{me=new MediaRecorder(stream)}
  catch(e){try{me=new MediaRecorder(stream,{mimeType:pickMime()})}catch(e2){ovFail("ضبط صدا در این مرورگر شروع نشد ("+((e2&&e2.name)||"?")+").");return}}
  mr=me;
  me.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};
- me.onerror=()=>{mr=null;ovHide();btn.classList.remove("rec");if(!IOS)micOff();msg.textContent="خطا در ضبط. دوباره امتحان کنید."};
+ me.onerror=()=>{mr=null;ovHide();btn.classList.remove("rec");micOff();msg.textContent="خطا در ضبط. دوباره امتحان کنید."};
  me.onstop=()=>{
-  clearTimeout(recTimer);mr=null;ovHide();btn.classList.remove("rec");if(!IOS)micOff();
+  clearTimeout(recTimer);mr=null;ovHide();btn.classList.remove("rec");
   const peakLow=peak>0&&peak<0.03,b=new Blob(chunks,{type:me.mimeType||"audio/webm"});
   if(b.size<800){msg.textContent="صدایی ضبط نشد؛ نزدیک‌تر بگویید و دوباره امتحان کنید.";return}
   delete urls[k];dbPut(k,b);mark(k);
@@ -275,40 +280,6 @@ async function startRec(k,btn){
  me.start();btn.classList.add("rec");lvStart();ovStatus("🔴 همین حالا بگویید...");
  recTimer=setTimeout(()=>{if(mr===me)stopRec()},8000)}
 document.addEventListener("visibilitychange",()=>{if(document.hidden){stopRec();micOff()}});
-
-/* ---------- بررسی میکروفون (برای پیدا کردن مشکل) ---------- */
-document.getElementById("dg").onclick=async()=>{
- const d=document.getElementById("diag"),L=[],ok=v=>v?"✔":"✖";
- d.hidden=false;const show=()=>{d.textContent="🔍 نتیجهٔ بررسی:\n"+L.join("\n")};
- L.push("در حال بررسی...");show();L.length=0;
- unlockAudio();
- L.push("آدرس امن (https): "+ok(window.isSecureContext)+"  ("+location.protocol+")");
- const md=!!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia);
- L.push("دسترسی به میکروفون در این مرورگر: "+ok(md));
- L.push("ضبط‌کنندهٔ صدا: "+ok(typeof MediaRecorder!=="undefined")+"  فرمت: "+(pickMime()||"پیش‌فرض"));
- L.push("نوع مرورگر: "+(IOS?"iOS":"اندروید/دیگر")+(INAPP?" — ⚠️ داخل برنامهٔ دیگر":"")+"  ["+UA.slice(-60)+"]");
- L.push("نصب‌شده به‌صورت برنامه: "+((window.matchMedia&&matchMedia("(display-mode: standalone)").matches)||navigator.standalone?"بله":"خیر"));
- try{const q=await navigator.permissions.query({name:"microphone"});L.push("اجازهٔ میکروفون: "+q.state)}catch(e){L.push("اجازهٔ میکروفون: نامشخص")}
- show();
- if(!md||typeof MediaRecorder==="undefined"){L.push("⛔ این مرورگر/حالت از ضبط پشتیبانی نمی‌کند.");show();return}
- let st=null;
- try{st=await navigator.mediaDevices.getUserMedia({audio:true});L.push("باز شدن میکروفون: ✔")}
- catch(e){L.push("باز شدن میکروفون: ✖  ("+(e&&e.name)+")");show();return}
- show();
- try{
-  const mime=pickMime(),r=mime?new MediaRecorder(st,{mimeType:mime}):new MediaRecorder(st),ch=[];
-  r.ondataavailable=e=>{if(e.data&&e.data.size)ch.push(e.data)};
-  const done=new Promise(res=>{r.onstop=res});
-  L.push("🔴 ۲ ثانیه صحبت کنید...");show();
-  r.start(250);await new Promise(x=>setTimeout(x,2000));r.stop();await done;
-  const b=new Blob(ch,{type:r.mimeType||mime||"audio/webm"});
-  L.push("حجم صدای ضبط‌شده: "+b.size+" بایت "+ok(b.size>800)+"  ("+(b.type||"?")+")");show();
-  if(b.size>800){
-   AUD.onended=null;AUD.onerror=()=>{};AUD.src=URL.createObjectURL(b);
-   try{await AUD.play();L.push("پخش صدا: ✔ (باید صدای خودتان را بشنوید)")}catch(e){L.push("پخش صدا: ✖  ("+(e&&e.name)+")")}}
- }catch(e){L.push("ضبط: ✖  ("+(e&&e.name||e)+")")}
- st.getTracks().forEach(x=>x.stop());show()};
-
 
 /* ---------- کیبورد ---------- */
 function draw(){
@@ -349,7 +320,7 @@ const snd=document.getElementById("snd"),rm=document.getElementById("rm");
 snd.onclick=()=>{sound=!sound;snd.classList.toggle("on",sound);snd.textContent="🔊 صدای حروف: "+(sound?"روشن":"خاموش");if(!sound){if(cur)cur.pause();if(window.speechSynthesis)speechSynthesis.cancel()}};
 rm.onclick=async()=>{recMode=!recMode;stopRec();document.getElementById("recguide").hidden=!recMode;document.getElementById("recbar").hidden=!recMode;idleReset();document.body.classList.toggle("recmode",recMode);rm.classList.toggle("recon",recMode);
  rm.textContent=recMode?"⏹ پایان حالت ضبط":"🎙 حالت ضبط صدا";
- if(recMode){unlockAudio();msg.textContent="در حال آماده‌سازی میکروفون...";if(await micOn()){if(!IOS)micOff();if(recMode)msg.textContent=(INAPP?"⚠️ اگر صدا ضبط نشد، صفحه را در Chrome باز کنید. ":"")+"هر کلید را بزنید و حرف را بگویید. برای پایان دوباره همان کلید را بزنید."}}
+ if(recMode){unlockAudio();msg.textContent="در حال آماده‌سازی میکروفون...";if(await micOn()){if(!recMode){micOff();return}msg.textContent=(INAPP?"⚠️ اگر صدا ضبط نشد، صفحه را در Chrome باز کنید. ":"")+"میکروفون آماده است؛ هر کلید را بزنید و حرف را بگویید. برای پایان دوباره همان کلید را بزنید."}}
  else{micOff();msg.textContent=""}};
 
 /* خروج خودکار از حالت ضبط بعد از ۲ دقیقه بی‌کاری */
