@@ -158,7 +158,7 @@ body.recmode{padding-bottom:90px}
 <button class="btn" id="ls">📚 املاهای ذخیره‌شده</button>
 <button class="btn" id="ins">📲 نصب برنامه</button>
 <button class="btn" id="dm">📝 املا از والدین</button>
-<button class="btn" id="rm">🎙 حالت ضبط صدا</button>
+<button class="btn" id="rm" type="button" onclick="toggleRecordMode()">🎙 حالت ضبط صدا</button>
 </div>
 <div id="dict" hidden></div>
 <div id="wl" hidden></div>
@@ -175,7 +175,7 @@ body.recmode{padding-bottom:90px}
 ۶. دوباره «حالت ضبط صدا» را بزنید تا خاموش شود و املا شروع شود.<br>
 <small>صداها فقط روی همین دستگاه و همین مرورگر ذخیره می‌شوند.</small>
 </details>
-<p id="ver" style="text-align:center;font-size:.8rem;opacity:.5;margin-top:16px">نسخهٔ ۲۸ — ضبط ساده و پایدار صدا</p>
+<p id="ver" style="text-align:center;font-size:.8rem;opacity:.5;margin-top:16px">نسخهٔ ۲۹ — فعال‌سازی مطمئن ضبط</p>
 </main>
 <script>
 const L=[["ا","الف"],["آ","آ"],["ب","به"],["پ","په"],["ت","ته"],["ث","ثه"],["ج","جیم"],["چ","چیم"],["ح","حه"],["خ","خه"],["د","دال"],["ذ","ذال"],["ر","ره"],["ز","زه"],["ژ","ژه"],["س","سین"],["ش","شین"],["ص","صاد"],["ض","ضاد"],["ط","طا"],["ظ","ظا"],["ع","عین"],["غ","غین"],["ف","فه"],["ق","قاف"],["ک","کاف"],["گ","گاف"],["ل","لام"],["م","میم"],["ن","نون"],["و","واو"],["ه","هه"],["ی","یه"],["ئ","همزه"]];
@@ -317,10 +317,13 @@ mk("🗑 همه","s",()=>{toks=[];changed()});
 /* ---------- دکمه‌های بالا ---------- */
 const snd=document.getElementById("snd"),rm=document.getElementById("rm");
 snd.onclick=()=>{sound=!sound;snd.classList.toggle("on",sound);snd.textContent="🔊 صدای حروف: "+(sound?"روشن":"خاموش");if(!sound){if(cur)cur.pause();if(window.speechSynthesis)speechSynthesis.cancel()}};
-rm.onclick=()=>{recMode=!recMode;document.getElementById("recguide").hidden=!recMode;document.getElementById("recbar").hidden=!recMode;idleReset();document.body.classList.toggle("recmode",recMode);rm.classList.toggle("recon",recMode);
- rm.textContent=recMode?"⏹ پایان حالت ضبط":"🎙 حالت ضبط صدا";
+function toggleRecordMode(){
+ recMode=!recMode;
+ document.getElementById("recguide").hidden=!recMode;document.getElementById("recbar").hidden=!recMode;
+ document.body.classList.toggle("recmode",recMode);rm.classList.toggle("recon",recMode);
+ rm.textContent=recMode?"⏹ پایان حالت ضبط":"🎙 حالت ضبط صدا";idleReset();
  if(recMode){unlockAudio();msg.textContent=(INAPP?"⚠️ صفحه را مستقیماً در Chrome باز کنید. ":"")+"هر کلید را بزنید و حرف را بگویید. برای پایان دوباره همان کلید را بزنید."}
- else{micRequestId++;if(mr)stopRec();else micOff();msg.textContent=""}};
+ else{micRequestId++;if(mr)stopRec();else micOff();msg.textContent=""}}
 
 /* خروج خودکار از حالت ضبط بعد از ۲ دقیقه بی‌کاری */
 let idleT=null;
@@ -543,7 +546,7 @@ if(saved.length||words.length)msg.textContent="خوش آمدی! 📚 "+saved.len
 
 function statusLine(){
  let ok=true;try{localStorage.setItem("kbtest","1");ok=localStorage.getItem("kbtest")==="1";localStorage.removeItem("kbtest")}catch(e){ok=false}
- document.getElementById("stat").textContent="نسخهٔ ۲۸ · ذخیره: حافظه "+(ok?"✔":"✖")+" · پایگاه "+(db?"✔":"✖")+" · کوکی "+(ckOk()?"✔":"✖")}
+ document.getElementById("stat").textContent="نسخهٔ ۲۹ · ذخیره: حافظه "+(ok?"✔":"✖")+" · پایگاه "+(db?"✔":"✖")+" · کوکی "+(ckOk()?"✔":"✖")}
 statusLine();
 /* ---------- پایداری ذخیره‌سازی ---------- */
 (function(){
@@ -586,7 +589,7 @@ openDB().then(d=>{db=d;return dbLoad()}).then(()=>Object.keys(mem).forEach(mark)
 
 /* ---------- نصب به‌صورت برنامه ---------- */
 if("serviceWorker" in navigator&&(location.protocol==="https:"||location.hostname==="localhost")){
- navigator.serviceWorker.register("sw.js").catch(()=>{})}
+ navigator.serviceWorker.register("sw.js?v=34",{updateViaCache:"none"}).then(r=>r.update()).catch(()=>{})}
 let dip=null;const ins=document.getElementById("ins");
 window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();dip=e});
 if((window.matchMedia&&matchMedia("(display-mode: standalone)").matches)||navigator.standalone===true)ins.hidden=true;
