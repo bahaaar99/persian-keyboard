@@ -58,7 +58,10 @@ details{background:var(--card);border:2px solid var(--line);border-radius:14px;p
 .it .tx{flex:1 1 100%;font-size:2rem;overflow-wrap:anywhere}
 .it .dt{flex:1;font-size:.85rem;opacity:.7}
 .sm{font:inherit;font-size:.95rem;border:2px solid var(--line);background:var(--bg);color:var(--ink);border-radius:10px;padding:6px 10px;cursor:pointer}
-.ch{display:inline-block;min-width:1.1em;text-align:center;border-bottom:5px solid var(--accent);margin:0 5px 2px;padding:0 4px;position:relative;line-height:1.35}
+.word{--count:1;display:inline-block;position:relative;min-width:calc(var(--count) * 1.05em);margin:0 .1em 2px;padding:0 .08em .12em;text-align:center;vertical-align:baseline;line-height:1.35}
+.word-text{position:relative;z-index:1;white-space:nowrap}
+.underlines{position:absolute;z-index:0;inset:0 .08em 0;display:grid;grid-template-columns:repeat(var(--count),minmax(0,1fr));gap:.16em;pointer-events:none;direction:rtl}
+.ch{display:block;min-width:0;border-bottom:5px solid var(--accent);position:relative}
 .gap{display:inline-block;width:1.2em}
 .ch.ok{border-color:#1f9d55}
 .ch.bad{background:#ffd9d9;border-color:#e5484d;color:#a4121b}
@@ -287,12 +290,16 @@ function draw(){
   if(k===" ")cells.push({sp:1});
   else if(MARK.test(k)&&cells.length&&!cells[cells.length-1].sp){const c=cells[cells.length-1];c.t.push(k);c.i.push(i)}
   else cells.push({t:[k],i:[i]})});
- cells.forEach(c=>{
-  const s=document.createElement("span");
-  if(c.sp){s.className="gap"}
-  else{s.className="ch";s.textContent=c.t.join("");
-   if(res){const st=c.i.map(i=>res[i]);if(st.includes(false))s.classList.add("bad");else if(!st.includes(null))s.classList.add("ok")}}
-  t.appendChild(s)})}
+ let run=[];
+ const flush=()=>{if(!run.length)return;
+  const word=document.createElement("span"),text=document.createElement("span"),lines=document.createElement("span");
+  word.className="word";word.style.setProperty("--count",run.length);text.className="word-text";
+  text.textContent=run.map(c=>c.t.join("")).join("");lines.className="underlines";lines.setAttribute("aria-hidden","true");
+  run.forEach(c=>{const s=document.createElement("span");s.className="ch";
+   if(res){const st=c.i.map(i=>res[i]);if(st.includes(false))s.classList.add("bad");else if(!st.includes(null))s.classList.add("ok")}
+   lines.appendChild(s)});
+  word.append(text,lines);t.appendChild(word);run=[]};
+ cells.forEach(c=>{if(c.sp){flush();const s=document.createElement("span");s.className="gap";t.appendChild(s)}else run.push(c)});flush()}
 function changed(){res=null;if(mode==="dict")liveCheck();else draw()}
 function add(c){toks.push(c);changed();if(sound)play(c)}
 function mk(label,cls,fn,key){
